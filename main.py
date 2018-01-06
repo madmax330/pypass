@@ -1,28 +1,23 @@
-import database
-from password import Password
-from verification import verify
-from command import Quit_Command
-from command import Help_Command
+from verification import Verification
+from command import QuitException
+from sqlite3 import Error
+from database import Database
 
-def main():
+try:
+    db = Database()
     while True:
-        var = raw_input("Please enter a command: ")
-        command = verify(var)
-        # print command
-        if (not command):
-            pass
-        elif isinstance(command, Quit_Command):
-            break
-        elif isinstance(command, Help_Command):
-            print 'Commands:'
-            print 'Add:\n add <platform> <username> <password>'
-            print 'Search:\n search <platform>'
-            print 'Delete:\n delete <platform>'
-            print 'Quit: quit'
-        else :
-            print database.execute(command)
+        verify = Verification()
+        var = input("Please enter a command: ")
+        command = verify.verify(var)
+        if command:
+            command.run(db)
+        else:
+            verify.print_errors()
 
-        # Database.toString()
+except (QuitException, Error) as e:
+    if isinstance(e, QuitException):
+        print('Thanks for using pypass, until next time!')
+    else:
+        print(str(e))
+        print('Error connecting to the database, please relaunch the application.')
 
-if __name__ == '__main__':
-    main()
