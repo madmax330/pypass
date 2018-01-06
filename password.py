@@ -11,4 +11,4 @@ class Password:
         self.password = new_pass
 
     def __repr__(self):
-        return "%s \nUsername: %s \nPassword: %s\n" % (self.platform, self.username, self.password)
+        return "%s \nUsername: %s \nPassword: %s" % (self.platform, self.username, self.password)

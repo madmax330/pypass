@@ -1,3 +1,4 @@
+from error_class import BColors
 
 
 class QuitException(Exception):
@@ -25,7 +26,7 @@ class AddCommand(Command):
 
     def run(self, db):
         db.add_password(self.password)
-        print('Password added successfully.')
+        print(BColors.OKGREEN + 'Password added successfully.' + BColors.ENDC)
 
 
 class SearchCommand(Command):
@@ -42,9 +43,10 @@ class SearchCommand(Command):
         results = db.search_password(self.platform)
         if results:
             for x in results:
-                print(str(x))
+                print(BColors.OKBLUE + str(x))
+            print(BColors.ENDC)
         else:
-            print('No password entry found.')
+            print(BColors.WARNING + 'No password entry found.' + BColors.ENDC)
 
 
 class DeleteCommand(Command):
@@ -61,9 +63,9 @@ class DeleteCommand(Command):
         results = db.search_password(self.platform)
         if results:
             db.delete_password(self.platform)
-            print('Password deleted successfully.')
+            print(BColors.OKGREEN + 'Password deleted successfully.' + BColors.ENDC)
         else:
-            print('No password entry found.')
+            print(BColors.WARNING + 'No password entry found.' + BColors.ENDC)
 
 
 class QuitCommand(Command):
