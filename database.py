@@ -15,6 +15,7 @@ class Database:
             html.escape(password.username),
             html.escape(password.password)
         ))
+        self.db.commit()
 
     def search_password(self, platform):
         cur = self.db.cursor()
@@ -28,8 +29,10 @@ class Database:
     def delete_password(self, platform):
         cur = self.db.cursor()
         cur.execute("DELETE FROM password WHERE platform=?", (platform,))
+        self.db.commit()
 
     def update_password(self, platform, password):
         cur = self.db.cursor()
         cur.execute("UPDATE password SET password=? WHERE platform=?", (password, platform))
+        self.db.commit()
 
