@@ -1,16 +1,13 @@
-from error_class import ErrorClass
 
 
-class EncryptionClass(ErrorClass):
+class Encryption:
 
-    def __init__(self):
-        super(ErrorClass, self).__init__()
-        self.className = 'Encryption'
-
-    def encrypt(self, val):
+    @staticmethod
+    def encrypt(val):
         pass
 
-    def decrypt(self, val):
+    @staticmethod
+    def decrypt(val):
         pass
 
 

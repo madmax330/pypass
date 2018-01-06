@@ -1,8 +1,4 @@
 from database import Database
-from encryption import EncryptionClass
-from verification import Verification
-from command import Command
-
 
 passwords = []
 command = ''
