@@ -1,43 +1,45 @@
 from error_class import ErrorClass
 from password import Password
-from database import Database
 from encryption import  Encryption
 
+class Add_Command:
+    def __init__ (self, platform, username, password):
+        self.command = 'add'
+        self.platform = platform
+        self.username = username
+        self.password = password
 
-class Command(ErrorClass):  # Base Command Class
+    def __repr__ (self):
+        return "%s: %s" % (self.command, self.platform)
 
-    def __init__(self):
-        super(ErrorClass, self).__init__()
-        self.className = 'Command'
+class Search_Command:
+    def __init__ (self, platform):
+        self.command = 'search'
+        self.platform = platform
 
-    def run(self):
-        print('Run method not implemented.')
+    def __repr__ (self):
+        return "%s: %s" % (self.command, self.platform)
 
+class Delete_Command:
+    def __init__ (self, platform):
+        self.command = 'delete'
+        self.platform = platform
 
-class NewCommand(Command):  # New password command
+    def __repr__ (self):
+            return "%s: %s" % (self.command, self.platform)
 
-    def __init__(self):
-        super(Command, self).__init__()
+class Quit_Command:
+    def __init__ (self):
+        self.command = 'quit'
+        self.platform = None
 
-    def run(self):
-        pass
+    def __repr__ (self):
+        return "%s: %s" % (self.command, self.platform)
 
+class Help_Command:
+    def __init__ (self):
+        self.command = 'help'
+        self.platform = None
 
-class SearchCommand(Command):  # Search password command
-
-    def __init__(self):
-        super(Command, self).__init__()
-
-    def run(self):
-        pass
-
-
-class DeleteCommand(Command):  # Delete password command
-
-    def __init__(self):
-        super(Command, self).__init__()
-
-    def run(self):
-        pass
-
-
+    def __repr__ (self):
+        return "%s: %s" % (self.command, self.platform)
