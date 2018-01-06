@@ -1,5 +1,5 @@
 
-class bcolors:
+class BColors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
@@ -21,10 +21,12 @@ class ErrorClass:
 
     def print_errors(self):
         if len(self.errors):
+            print(BColors.FAIL + self.className + ' Errors:')
             for x in self.errors:
-                print(bcolors.FAIL + self.className + ' - ' + x)
+                print(' - ' + x)
+                print(BColors.ENDC)
         else:
-            print(bcolors.OKGREEN + self.className + ' - No errors found.')
+            print(BColors.OKGREEN + self.className + ': No errors found.')
 
 
 
