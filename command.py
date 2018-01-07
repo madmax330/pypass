@@ -25,8 +25,15 @@ class AddCommand(Command):
         return "%s: %s" % (self.command, self.password.platform)
 
     def run(self, db):
-        db.add_password(self.password)
-        print(BColors.OKGREEN + 'Password added successfully.' + BColors.ENDC)
+        if self.password.is_blank():
+            self.password.platform = input('Platform:')
+            self.password.username = input('Username:')
+            self.password.password = input('Password:')
+        if not self.password.is_blank():
+            db.add_password(self.password)
+            print(BColors.OKGREEN + 'Password added successfully.' + BColors.ENDC)
+        else:
+            print(BColors.FAIL + 'Platform, Username and Password cannot be left blank.' + BColors.ENDC)
 
 
 class SearchCommand(Command):
@@ -79,12 +86,19 @@ class UpdateCommand(Command):
         return "%s: %s" % (self.command, self.password.platform)
 
     def run(self, db):
-        results = db.search_password(self.password.platform)
-        if results:
-            db.update_password(self.password)
-            print(BColors.OKGREEN + 'Password updated successfully.' + BColors.ENDC)
+        if self.password.is_blank():
+            self.password.platform = input('Platform:')
+            self.password.username = input('Username:')
+            self.password.password = input('Password:')
+        if not self.password.is_blank():
+            results = db.search_password(self.password.platform)
+            if results:
+                db.update_password(self.password)
+                print(BColors.OKGREEN + 'Password updated successfully.' + BColors.ENDC)
+            else:
+                print(BColors.WARNING + 'No password entry found.' + BColors.ENDC)
         else:
-            print(BColors.WARNING + 'No password entry found.' + BColors.ENDC)
+            print(BColors.FAIL + 'Platform, Username and Password cannot be left blank.' + BColors.ENDC)
 
 
 class QuitCommand(Command):
