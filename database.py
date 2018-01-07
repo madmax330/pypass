@@ -33,6 +33,10 @@ class Database:
 
     def update_password(self, platform, password):
         cur = self.db.cursor()
-        cur.execute("UPDATE password SET password=? WHERE platform=?", (password, platform))
+        cur.execute("UPDATE password SET username=?, password=? WHERE platform=?", (
+            password.username,
+            password.password,
+            password.platform,
+        ))
         self.db.commit()
 
