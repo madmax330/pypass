@@ -51,6 +51,9 @@ class Verification(ErrorClass):
             if command == 'add':
                 return AddCommand(Password(platform.lower(), username, password))
 
+            elif command == 'update':
+                return UpdateCommand(Password(platform.lower(), username, password))
+
             else:
                 self.add_error('Invalid command')
                 return None

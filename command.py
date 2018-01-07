@@ -68,6 +68,25 @@ class DeleteCommand(Command):
             print(BColors.WARNING + 'No password entry found.' + BColors.ENDC)
 
 
+class UpdateCommand(Command):
+
+    def __init__(self, password):
+        super(UpdateCommand, self).__init__()
+        self.command = 'update'
+        self.password = password
+
+    def __repr__(self):
+        return "%s: %s" % (self.command, self.password.platform)
+
+    def run(self, db):
+        results = db.search_password(self.password.platform)
+        if results:
+            db.update_password(self.password)
+            print(BColors.OKGREEN + 'Password updated successfully.' + BColors.ENDC)
+        else:
+            print(BColors.WARNING + 'No password entry found.' + BColors.ENDC)
+
+
 class QuitCommand(Command):
 
     def __init__(self):
@@ -95,4 +114,5 @@ class HelpCommand(Command):
         print('Add:\n add <platform> <username> <password>')
         print('Search:\n search <platform>')
         print('Delete:\n delete <platform>')
+        print('Update:\n update <platform> <username> <password>')
         print('Quit: quit')
