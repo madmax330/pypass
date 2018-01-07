@@ -31,7 +31,7 @@ class Database:
         cur.execute("DELETE FROM password WHERE platform=?", (platform,))
         self.db.commit()
 
-    def update_password(self, platform, password):
+    def update_password(self, password):
         cur = self.db.cursor()
         cur.execute("UPDATE password SET username=?, password=? WHERE platform=?", (
             password.username,
@@ -39,4 +39,3 @@ class Database:
             password.platform,
         ))
         self.db.commit()
-
