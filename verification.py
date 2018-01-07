@@ -23,6 +23,10 @@ class Verification(ErrorClass):
                 return QuitCommand()
             elif command == 'help':
                 return HelpCommand()
+            elif command == 'add':
+                return AddCommand(Password('', '', ''))
+            elif command == 'update':
+                return UpdateCommand(Password('', '', ''))
             else:
                 self.add_error('Invalid command')
 
