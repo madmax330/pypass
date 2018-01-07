@@ -11,7 +11,7 @@ class Password:
         self.password = new_pass
 
     def is_blank(self):
-        return self.platform and self.username and self.password
+        return not (self.platform and self.username and self.password)
 
     def __repr__(self):
         return "%s \nUsername: %s \nPassword: %s" % (self.platform, self.username, self.password)
