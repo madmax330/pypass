@@ -81,7 +81,10 @@ class UpdateCommand(Command):
     def run(self, db):
         results = db.search_password(self.password.platform)
         if results:
+            for x in results:
+                print('Old Password: %s' % (str(x.password)))
             db.update_password(self.password)
+            print('New Password: %s' % (str(self.password.password)))
             print(BColors.OKGREEN + 'Password updated successfully.' + BColors.ENDC)
         else:
             print(BColors.WARNING + 'No password entry found.' + BColors.ENDC)
