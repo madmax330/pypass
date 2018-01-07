@@ -1,17 +1,24 @@
-from error_class import BColors
+from error_class import BColors, ErrorClass
 
 
 class QuitException(Exception):
     pass
 
 
-class Command:
+class Command(ErrorClass):
 
     def __init__(self):
+        super(Command, self).__init__()
         self.className = 'Command'
 
     def run(self, db):
         print('Run method was not implemented.')
+
+    def check_conditions(self):
+        print('Check conditions not implemented.')
+
+    def print_success(self):
+        print('Print success not implemented.')
 
 
 class AddCommand(Command):
@@ -26,14 +33,23 @@ class AddCommand(Command):
 
     def run(self, db):
         if self.password.is_blank():
-            self.password.platform = input('Platform:')
-            self.password.username = input('Username:')
-            self.password.password = input('Password:')
-        if not self.password.is_blank():
+            self.__step_by_step()
+        if self.check_conditions():
             db.add_password(self.password)
             print(BColors.OKGREEN + 'Password added successfully.' + BColors.ENDC)
-        else:
-            print(BColors.FAIL + 'Platform, Username and Password cannot be left blank.' + BColors.ENDC)
+
+        self.print_errors()
+
+    def __step_by_step(self):
+        self.password.platform = input('Platform:')
+        self.password.username = input('Username:')
+        self.password.password = input('Password:')
+
+    def check_conditions(self):
+        if self.password.is_blank():
+            self.add_error('Platform, Username and Password cannot be left blank.')
+            return False
+        return True
 
 
 class SearchCommand(Command):
@@ -70,38 +86,68 @@ class DeleteCommand(Command):
         results = db.search_password(self.platform)
         if results:
             db.delete_password(self.platform)
-            print(BColors.OKGREEN + 'Password deleted successfully.' + BColors.ENDC)
+            self.print_success()
         else:
             print(BColors.WARNING + 'No password entry found.' + BColors.ENDC)
+
+    def print_success(self):
+        print(BColors.OKGREEN + 'Password deleted successfully.' + BColors.ENDC)
 
 
 class UpdateCommand(Command):
 
-    def __init__(self, password):
+    def __init__(self, password, flag=''):
         super(UpdateCommand, self).__init__()
         self.command = 'update'
         self.password = password
+        self.flag = flag
+        self.new_username = ''
 
     def __repr__(self):
         return "%s: %s" % (self.command, self.password.platform)
 
     def run(self, db):
         if self.password.is_blank():
-            self.password.platform = input('Platform:')
-            self.password.username = input('Username:')
-            self.password.password = input('Password:')
-        if not self.password.is_blank():
+            self.__step_by_step()
+        if self.flag == '-u':
+            self.__get_new_username()
+        if self.check_conditions():
             results = db.search_password(self.password.platform)
             if results:
-                for x in results:
-                    print('Old Password: %s' % (str(x.password)))
-                db.update_password(self.password)
-                print('New Password: %s' % (str(self.password.password)))
-                print(BColors.OKGREEN + 'Password updated successfully.' + BColors.ENDC)
+                db.update_password(self.password, self.new_username)
+                self.print_success()
+                print('Old Password(s):')
+                print_passwords(results)
+                results = db.search_password(self.password.platform)
+                print('New Password(s):')
+                print_passwords(results)
             else:
                 print(BColors.WARNING + 'No password entry found.' + BColors.ENDC)
-        else:
-            print(BColors.FAIL + 'Platform, Username and Password cannot be left blank.' + BColors.ENDC)
+
+        self.print_errors()
+
+    def check_conditions(self):
+        no_error = True
+        if self.password.is_blank():
+            self.add_error('Platform, Username and Password cannot be left blank.')
+            no_error = False
+        if self.flag == '-u' and not self.new_username:
+            self.add_error('New username cannot be left blank.')
+        return no_error
+
+    def print_success(self):
+        print(BColors.OKGREEN + 'Password updated successfully.' + BColors.ENDC)
+
+    def __step_by_step(self):
+        self.password.platform = input('Platform: ')
+        self.password.username = input('Username: ')
+        self.password.password = input('Password: ')
+        change_username = input('Change username? (Y)es/(N)o: ')
+        if change_username and change_username.lower() == 'y':
+            self.flag = '-u'
+
+    def __get_new_username(self):
+        self.new_username = input('New Username: ')
 
 
 class QuitCommand(Command):
@@ -133,3 +179,9 @@ class HelpCommand(Command):
         print('Delete:\n delete <platform>')
         print('Update:\n update <platform> <username> <password>')
         print('Quit: quit')
+
+
+def print_passwords(l):
+    for x in l:
+        print(str(x))
+    print(BColors.ENDC)

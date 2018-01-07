@@ -29,7 +29,7 @@ class Verification(ErrorClass):
             elif command == 'update':
                 return UpdateCommand(Password('', '', ''))
             else:
-                self.add_error('Invalid command')
+                self.add_error('Invalid command.')
 
         elif len(arguments) == 2:
             command = arguments[0]
@@ -43,8 +43,13 @@ class Verification(ErrorClass):
                 return DeleteCommand(platform.lower())
 
             else:
-                self.add_error('Invalid command')
+                self.add_error('Invalid command.')
                 return None
+
+        elif len(arguments) == 3:
+            command = arguments[0]
+            platform = arguments[1]
+            password = arguments[2]
 
         elif len(arguments) == 4:
             command = arguments[0]
@@ -60,9 +65,22 @@ class Verification(ErrorClass):
                 return UpdateCommand(Password(platform.lower(), username, password))
 
             else:
-                self.add_error('Invalid command')
+                self.add_error('Invalid command.')
+                return None
+
+        elif len(arguments) == 5:
+            command = arguments[0]
+            platform = arguments[1]
+            username = arguments[2]
+            password = arguments[3]
+            flag = arguments[4]
+
+            if command == 'update':
+                return UpdateCommand(Password(platform.lower(), username, password), flag=flag)
+            else:
+                self.add_error('Invalid command.')
                 return None
 
         else:
-            self.add_error('Command not found')
+            self.add_error('Command not found.')
             return None
