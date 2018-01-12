@@ -41,7 +41,7 @@ class AddCommand(Command):
         self.print_errors()
 
     def __step_by_step(self):
-        self.password.platform = input('Platform:')
+        self.password.platform = input('Platform:').lower()
         self.password.username = input('Username:')
         self.password.password = input('Password:')
 

@@ -29,92 +29,87 @@ class Verification(ErrorClass):
         # return the command
         arguments = command.split()
 
-        # checks if command is of form command -option user/platform
-        if len(arguments) == 1:
+        if len(arguments) > 0:
             command = arguments[0]
             if command == 'quit':
-                return QuitCommand()
+                return self.get_quit_command(arguments)
             elif command == 'help':
-                return HelpCommand()
+                return self.get_help_command(arguments)
             elif command == 'add':
-                return AddCommand(Password('', '', ''))
-            elif command == 'update':
-                return UpdateCommand(Password('', '', ''))
-            else:
-                self.add_error('Invalid command.')
-
-        elif len(arguments) == 2:
-            command = arguments[0]
-            platform = arguments[1]
-
-            # checks if valid command
-            if command == 'search':
-                return SearchCommand(platform.lower())
-
+                return self.get_add_command(arguments)
+            elif command == 'search':
+                return self.get_search_command(arguments)
             elif command == 'delete':
-                return DeleteCommand(platform.lower())
-
-            else:
-                self.add_error('Invalid command.')
-                return None
-
-        elif len(arguments) == 3:
-            command = arguments[0]
-            platform = arguments[1]
-            password = arguments[2]
-
-        elif len(arguments) == 4:
-            command = arguments[0]
-            platform = arguments[1]
-            username = arguments[2]
-            password = arguments[3]
-
-            # checks if valid command
-            if command == 'add':
-                return AddCommand(Password(platform.lower(), username, password))
-
+                return self.get_delete_command(arguments)
             elif command == 'update':
-                return UpdateCommand(Password(platform.lower(), username, password))
-
+                return self.get_update_command(arguments)
             else:
-                self.add_error('Invalid command.')
+                self.add_error('Command not found.')
                 return None
 
-        elif len(arguments) == 5:
-            command = arguments[0]
-            platform = arguments[1]
-            username = arguments[2]
-            password = arguments[3]
-            flag = arguments[4]
-
-            if command == 'update':
-                return UpdateCommand(Password(platform.lower(), username, password), flag=flag)
-            else:
-                self.add_error('Invalid command.')
-                return None
-
-        else:
-            self.add_error('Command not found.')
-            return None
 
     def get_add_command(self, args):
-        pass
+        if len(args) == 1:
+            return AddCommand(Password('', '', ''))
+        elif len(args) == 4:
+            platform = args[1]
+            username = args[2]
+            password = args[3]
+            return AddCommand(Password(platform.lower(), username, password))
+        else:
+            self.add_error('Invalid command.')
+            return None
 
     def get_search_command(self, args):
-        pass
+        if len(args) == 2:
+            platform = args[1]
+            return SearchCommand(platform.lower())
+        else:
+            self.add_error('Invalid command.')
+            return None
+
+    def get_delete_command(self, args):
+        if len(args) == 2:
+            platform = args[1]
+            return DeleteCommand(platform.lower())
+        else:
+            self.add_error('Invalid command.')
+            return None
 
     def get_update_command(self, args):
-        pass
+        if len(args) == 1:
+            return UpdateCommand(Password('', '', ''))
+        elif len(args) == 4:
+            platform = args[1]
+            username = args[2]
+            password = args[3]
+            return UpdateCommand(Password(platform.lower(), username, password))
+        elif len(args) == 5:
+            platform = args[1]
+            username = args[2]
+            password = args[3]
+            flag = args[4]
+            return UpdateCommand(Password(platform.lower(), username, password), flag=flag)
+        else:
+            self.add_error('Invalid command.')
+            return None
 
     def get_quit_command(self, args):
-        pass
+        if len(args) == 1:
+            return QuitCommand()
+        else:
+            self.add_error('Invalid command.')
+            return None
 
     def get_help_command(self, args):
-        pass
+        if len(args) == 1:
+            return HelpCommand()
+        else:
+            self.add_error('Invalid command.')
+            return None
 
-    def __get_command(self, command):  # returns a string value of the command
-        try:
-            return COMMANDS[COMMANDS.index(command)]
-        except ValueError:
-            return ''
-
+    # def __get_command(self, command):  # returns a string value of the command
+        # try:
+            # return COMMANDS[COMMANDS.index(command)]
+        # except ValueError:
+            # return ''
