@@ -8,15 +8,6 @@ from command import QuitCommand
 from command import HelpCommand
 
 
-COMMANDS = [
-    'add',
-    'search',
-    'update',
-    'quit',
-    'help',
-]
-
-
 class Verification(ErrorClass):
 
     def __init__(self):
@@ -24,9 +15,6 @@ class Verification(ErrorClass):
         self.className = 'Verification'
 
     def verify(self, command):
-        # check if first arg is a command
-        # call appropriate method for each command
-        # return the command
         arguments = command.split()
 
         if len(arguments) > 0:
@@ -46,7 +34,6 @@ class Verification(ErrorClass):
             else:
                 self.add_error('Command not found.')
                 return None
-
 
     def get_add_command(self, args):
         if len(args) == 1:
@@ -108,8 +95,4 @@ class Verification(ErrorClass):
             self.add_error('Invalid command.')
             return None
 
-    # def __get_command(self, command):  # returns a string value of the command
-        # try:
-            # return COMMANDS[COMMANDS.index(command)]
-        # except ValueError:
-            # return ''
+
