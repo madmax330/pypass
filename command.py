@@ -74,18 +74,19 @@ class SearchCommand(Command):
 
 class DeleteCommand(Command):
 
-    def __init__(self, platform):
+    def __init__(self, platform, username):
         super(DeleteCommand, self).__init__()
         self.command = 'delete'
         self.platform = platform
+        self.username = username
 
     def __repr__(self):
-            return "%s: %s" % (self.command, self.platform)
+            return "%s: %s %s" % (self.command, self.platform, self.username)
 
     def run(self, db):
-        results = db.search_password(self.platform)
+        results = db.search_password(self.platform, username=self.username)
         if results:
-            db.delete_password(self.platform)
+            db.delete_password(self.platform, self.username)
             self.print_success()
         else:
             print(BColors.WARNING + 'No password entry found.' + BColors.ENDC)
@@ -112,7 +113,7 @@ class UpdateCommand(Command):
         if self.flag == '-u':
             self.__get_new_username()
         if self.check_conditions():
-            results = db.search_password(self.password.platform)
+            results = db.search_password(self.password.platform, username=self.password.username)
             if results:
                 db.update_password(self.password, self.new_username)
                 self.print_success()
@@ -177,7 +178,7 @@ class HelpCommand(Command):
         print('Add:\n add <platform> <username> <password>')
         print('Search:\n search <platform>')
         print('Delete:\n delete <platform>')
-        print('Update:\n update <platform> <username> <password>')
+        print('Update:\n update <platform> <username> <password> <-u>')
         print('Quit: quit')
 
 

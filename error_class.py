@@ -25,8 +25,6 @@ class ErrorClass:
             for x in self.errors:
                 print(' - ' + x)
                 print(BColors.ENDC)
-        else:
-            print(BColors.OKGREEN + self.className + ': No errors found.')
 
 
 
