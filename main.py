@@ -4,9 +4,17 @@ from verification import Verification
 from command import QuitException
 from sqlite3 import Error
 from database import Database
+from startup import startup, StartupException
 
 
 def main():
+
+    try:
+        startup()
+    except StartupException as e:
+        print('Error starting up pypass.\n' + str(e))
+        return
+
     try:
         db = Database()
         while True:
@@ -26,6 +34,6 @@ def main():
             print('Error connecting to the database, please relaunch the application.')
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     main()
 

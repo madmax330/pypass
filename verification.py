@@ -42,7 +42,7 @@ class Verification(ErrorClass):
             platform = args[1]
             username = args[2]
             password = args[3]
-            return AddCommand(Password(platform.lower(), username, password))
+            return AddCommand(Password(platform.lower(), username.lower(), password))
         else:
             self.add_error('Invalid command.')
             return None
@@ -56,9 +56,10 @@ class Verification(ErrorClass):
             return None
 
     def get_delete_command(self, args):
-        if len(args) == 2:
+        if len(args) == 3:
             platform = args[1]
-            return DeleteCommand(platform.lower())
+            username = args[2]
+            return DeleteCommand(platform.lower(), username.lower())
         else:
             self.add_error('Invalid command.')
             return None
@@ -70,13 +71,13 @@ class Verification(ErrorClass):
             platform = args[1]
             username = args[2]
             password = args[3]
-            return UpdateCommand(Password(platform.lower(), username, password))
+            return UpdateCommand(Password(platform.lower(), username.lower(), password))
         elif len(args) == 5:
             platform = args[1]
             username = args[2]
             password = args[3]
             flag = args[4]
-            return UpdateCommand(Password(platform.lower(), username, password), flag=flag)
+            return UpdateCommand(Password(platform.lower(), username.lower(), password), flag=flag)
         else:
             self.add_error('Invalid command.')
             return None
