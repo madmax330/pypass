@@ -1,7 +1,7 @@
 import sqlite3
 import html
-from encryption import Encryption
-from password import Password
+from .encryption import Encryption
+from .password import Password
 
 
 class Database:

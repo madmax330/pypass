@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-from verification import Verification
-from command import QuitException
+from .verification import Verification
+from .command import QuitException
 from sqlite3 import Error
-from database import Database
-from startup import startup, StartupException
+from .database import Database
+from .startup import startup, StartupException
 
 
 def main():
