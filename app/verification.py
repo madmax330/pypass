@@ -1,11 +1,11 @@
-from error_class import ErrorClass
-from password import Password
-from command import AddCommand
-from command import SearchCommand
-from command import DeleteCommand
-from command import UpdateCommand
-from command import QuitCommand
-from command import HelpCommand
+from .error_class import ErrorClass
+from .password import Password
+from .command import AddCommand
+from .command import SearchCommand
+from .command import DeleteCommand
+from .command import UpdateCommand
+from .command import QuitCommand
+from .command import HelpCommand
 
 
 class Verification(ErrorClass):

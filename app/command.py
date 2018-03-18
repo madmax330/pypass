@@ -1,4 +1,5 @@
-from error_class import BColors, ErrorClass
+from .error_class import ErrorClass
+from app.ui.colors import BColors
 
 
 class QuitException(Exception):
