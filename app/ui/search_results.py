@@ -28,7 +28,7 @@ class SearchResultsWindow(tk.Frame):
                 row += 1
             close_btn.grid(column=0, row=row, sticky="w")
         else:
-            self.master.show_error('No results found for platform: ' + platform)
+            self.master.show_message('No results found for platform: ' + platform, error=True)
 
     def clear_results(self):
         self.label.grid_forget()
