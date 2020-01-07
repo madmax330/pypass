@@ -18,7 +18,7 @@ print('Creating database...')
 try:
     db = sqlite3.connect('db.sqlite3')
     cur = db.cursor()
-    cur.execute('DROP TABLE password;')
+    cur.execute('DROP TABLE IF EXISTS password;')
     cur.execute(
         'CREATE TABLE password(platform varchar(256) not null, username varchar(256) not null, password varchar(256) not null);'
     )

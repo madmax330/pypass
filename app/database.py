@@ -1,7 +1,7 @@
 import sqlite3
 import html
-from .encryption import Encryption
-from .password import Password
+from app.encryption import Encryption
+from app.password import Password
 
 
 class Database:
@@ -23,13 +23,13 @@ class Database:
         cur = self.db.cursor()
         results = []
         if username:
-            cur.execute("SELECT * FROM password WHERE platform=? AND username=?", (platform, username))
+            cur.execute("SELECT * FROM password WHERE platform=? AND username=? COLLATE NOCASE", (platform, username))
             l = cur.fetchall()
             for x in l:
                 results.append(self.encryption.decrypt_password(Password(x[0], x[1], x[2])))
             return results
         else:
-            cur.execute("SELECT * FROM password WHERE platform=?", (platform,))
+            cur.execute("SELECT * FROM password WHERE platform=? COLLATE NOCASE", (platform,))
             l = cur.fetchall()
             for x in l:
                 results.append(self.encryption.decrypt_password(Password(x[0], x[1], x[2])))
