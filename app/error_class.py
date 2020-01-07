@@ -1,3 +1,5 @@
+from app.ui.colors import BColors
+
 
 class ErrorClass:
 

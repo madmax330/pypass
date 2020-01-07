@@ -1,4 +1,4 @@
-from .error_class import ErrorClass
+from app.error_class import ErrorClass
 from app.ui.colors import BColors
 
 
@@ -11,9 +11,14 @@ class Command(ErrorClass):
     def __init__(self):
         super(Command, self).__init__()
         self.className = 'Command'
+        self.command = ''
+        self.status = False
 
     def run(self, db):
         print('Run method was not implemented.')
+
+    def get_result(self):
+        return self.status
 
     def check_conditions(self):
         print('Check conditions not implemented.')
@@ -37,6 +42,7 @@ class AddCommand(Command):
             self.__step_by_step()
         if self.check_conditions():
             db.add_password(self.password)
+            self.status = True
             print(BColors.OKGREEN + 'Password added successfully.' + BColors.ENDC)
 
         self.print_errors()
@@ -59,18 +65,23 @@ class SearchCommand(Command):
         super(SearchCommand, self).__init__()
         self.command = 'search'
         self.platform = platform
+        self.results = []
 
     def __repr__(self):
         return "%s: %s" % (self.command, self.platform)
 
     def run(self, db):
-        results = db.search_password(self.platform)
-        if results:
-            for x in results:
+        self.results = db.search_password(self.platform)
+        if self.results:
+            self.status = True
+            for x in self.results:
                 print(BColors.OKBLUE + str(x))
             print(BColors.ENDC)
         else:
             print(BColors.WARNING + 'No password entry found.' + BColors.ENDC)
+
+    def get_result(self):
+        return self.results
 
 
 class DeleteCommand(Command):
@@ -89,6 +100,7 @@ class DeleteCommand(Command):
         if results:
             db.delete_password(self.platform, self.username)
             self.print_success()
+            self.status = True
         else:
             print(BColors.WARNING + 'No password entry found.' + BColors.ENDC)
 
@@ -98,12 +110,12 @@ class DeleteCommand(Command):
 
 class UpdateCommand(Command):
 
-    def __init__(self, password, flag=''):
+    def __init__(self, password, flag='', new_username=None):
         super(UpdateCommand, self).__init__()
         self.command = 'update'
         self.password = password
         self.flag = flag
-        self.new_username = ''
+        self.new_username = new_username if new_username else ''
 
     def __repr__(self):
         return "%s: %s" % (self.command, self.password.platform)
@@ -118,6 +130,7 @@ class UpdateCommand(Command):
             if results:
                 db.update_password(self.password, self.new_username)
                 self.print_success()
+                self.status = True
                 print('Old Password(s):')
                 print_passwords(results)
                 results = db.search_password(self.password.platform)
